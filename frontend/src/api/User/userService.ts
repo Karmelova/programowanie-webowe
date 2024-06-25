@@ -1,4 +1,4 @@
-import User from "../../types/user";
+import User from "../../types/user.ts";
 export default class UserService {
   static getAllUsers(): User[] {
     return JSON.parse(localStorage.getItem("users") || "[]");
