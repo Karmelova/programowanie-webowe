@@ -119,7 +119,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <nav className="mt-0 py-4 px-4 lg:mt-3 lg:px-6 h-full">
           {/* <!-- Menu Group --> */}
           <div className="flex flex-col justify-between h-full">
-            <ul className="mb-6 flex flex-col gap-1.5">
+            {isLoggedIn &&(<ul className="mb-6 flex flex-col gap-1.5">
               {/* <!-- Menu Item Dashboard --> */}
               <li>
                 <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
@@ -203,7 +203,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/* <!-- Menu Item Settings --> */}
-            </ul>
+            </ul>)}
 
             <ul className="flex flex-col gap-1.5">
               {/* <!-- Menu Item Auth Pages --> */}
