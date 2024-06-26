@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Project } from '../../types/project';
-import { getProjects, createProject, deleteProject, updateProject } from '../../api/Projects/projectService';
+import {
+  getProjects,
+  createProject,
+  deleteProject,
+  updateProject,
+} from '../../api/Projects/projectService';
 
 const ProjectsTable = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
-
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -21,9 +26,13 @@ const ProjectsTable = () => {
     fetchProjects();
   }, []);
 
+  const handleToggleModal = () => {
+    setShowModal(!showModal);
+  };
+
   const handleAddProject = async () => {
     const newProject = {
-      uuid:'',
+      uuid: '',
       name: newProjectName,
       description: newProjectDescription,
     };
@@ -41,12 +50,11 @@ const ProjectsTable = () => {
   const handleDeleteProject = async (uuid: string) => {
     try {
       await deleteProject(uuid);
-      setProjects(projects.filter(project => project.uuid !== uuid));
+      setProjects(projects.filter((project) => project.uuid !== uuid));
     } catch (error) {
       console.error('Error deleting project:', error);
     }
   };
-
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -54,7 +62,10 @@ const ProjectsTable = () => {
         <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
           Projects
         </h4>
-        <button className="mb-4 text-3xl font-semibold text-black dark:text-white w-15">
+        <button
+          className="mb-4 text-3xl font-semibold text-black dark:text-white w-15"
+          onClick={handleToggleModal}
+        >
           +
         </button>
       </div>
@@ -68,7 +79,7 @@ const ProjectsTable = () => {
           </div>
           <div className="p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Members
+              Description
             </h5>
           </div>
           <div className="p-2.5 text-center sm:block xl:p-5">
@@ -78,7 +89,7 @@ const ProjectsTable = () => {
           </div>
         </div>
 
-        {projects.length > 0  ? (
+        {projects.length > 0 ? (
           projects.map((project, key) => (
             <div
               className={`grid grid-cols-3 sm:grid-cols-3 ${
@@ -88,14 +99,16 @@ const ProjectsTable = () => {
               }`}
               key={key}
             >
-              <div className="flex items-center  p-2.5 xl:p-5">
-                <p className=" text-black dark:text-white sm:block">
+              <div className="flex items-center  p-2.5 xl:p-5 ">
+                <p className=" text-black dark:text-white sm:block w-full truncate">
                   {project.name}
                 </p>
               </div>
 
-              <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{project.uuid}K</p>
+              <div className="flex items-center justify-center p-2.5 xl:p-5 ">
+                <p className="text-black dark:text-white w-full truncate">
+                  {project.description}
+                </p>
               </div>
 
               <div className="flex items-center justify-center space-x-3.5">
@@ -118,7 +131,10 @@ const ProjectsTable = () => {
                     />
                   </svg>
                 </button>
-                <button className="hover:text-primary" onClick={() => handleDeleteProject(project.uuid)}>
+                <button
+                  className="hover:text-primary"
+                  onClick={() => handleDeleteProject(project.uuid)}
+                >
                   <svg
                     className="fill-current"
                     width="18"
@@ -156,6 +172,70 @@ const ProjectsTable = () => {
           </div>
         )}
       </div>
+
+      {/* Modal add project */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-70"></div>
+          <div className="relative bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:text-bodydark rounded-lg w-96 p-6">
+            <h3 className="font-medium text-black dark:text-white mb-4">
+              Add New Project
+            </h3>
+            <form>
+              <div className="mb-4">
+                <label
+                  htmlFor="projectName"
+                  className="mb-3 block text-black dark:text-white"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="projectName"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  value={newProjectName}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="projectDescription"
+                  className="mb-3 block text-black dark:text-white"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="projectDescription"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  value={newProjectDescription}
+                  onChange={(e) => setNewProjectDescription(e.target.value)}
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-[#F87171] text-white rounded-md hover:bg-primary-dark"
+                  onClick={() => {
+                    setShowModal(false); // Zamknięcie modala po dodaniu projektu
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+                  onClick={() => {
+                    handleAddProject(); // Funkcja do dodawania projektu
+                    setShowModal(false); // Zamknięcie modala po dodaniu projektu
+                  }}
+                >
+                  Add Project
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

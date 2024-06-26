@@ -13,7 +13,6 @@ const getToken = () => {
     const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("Token found in localStorage:", token);
     }
     return config;
   });

@@ -8,7 +8,6 @@ const generateToken = (id: string) => {
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '').replaceAll('"','').trim();
-  console.log(token)
   if (!token) {
     return res.status(401).json({ message: 'No token provided' });
   }
