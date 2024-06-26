@@ -4,8 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
-import authMiddleware from 'middleware/authMiddleware.js';
-import './types/express';
+import authMiddleware from './middleware/authMiddleware.js';
 
 
 dotenv.config();

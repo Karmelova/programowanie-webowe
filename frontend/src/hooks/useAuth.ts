@@ -29,11 +29,17 @@ const useAuth = () => {
       });
       const token = response.data.token;
       setAuthToken(token);
-      console.log('Zalogowano pomyślnie:', token);
+      console.log('Login success:', token);
     } catch (error: any) {
-      console.error('Błąd logowania:', error.response?.data?.message || error.message);
+      console.error('Login Error:', error.response?.data?.message || error.message);
       throw error;
     }
+  };
+
+  const logout = () => {
+    setAuthToken(null);
+    localStorage.removeItem('authToken');
+    console.log('Logout success');
   };
 
   const fetchProtectedData = async () => {
@@ -53,6 +59,7 @@ const useAuth = () => {
 
   return {
     login,
+    logout,
     fetchProtectedData,
     authToken,
   };

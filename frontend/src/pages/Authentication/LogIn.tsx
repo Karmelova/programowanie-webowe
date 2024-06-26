@@ -3,12 +3,14 @@ import axios from 'axios';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 
-const LogIn: React.FC = () => {
+const LogIn = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const { login } = useAuth();
+  const navigate = useNavigate();
 
 
   const [firstName, setFirstName] = useState('');
@@ -20,6 +22,9 @@ const LogIn: React.FC = () => {
     e.preventDefault();
     try {
       await login(loginEmail, loginPassword);
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
     } catch (error) {
       console.error('Login error:', error);
     }
