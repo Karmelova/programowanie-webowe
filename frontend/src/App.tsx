@@ -4,7 +4,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import LogIn from './pages/Authentication/LogIn';
-import ECommerce from './pages/Dashboard/Home';
+import Home from './pages/Dashboard/Home';
 import Settings from './pages/Settings';
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
           element={
             <>
               <PageTitle title="Projects | ManageMe" />
-              <ECommerce />
+              <Home />
             </>
           }
         />

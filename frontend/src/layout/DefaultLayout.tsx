@@ -1,9 +1,25 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/index';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { useNavigate } from 'react-router-dom';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [authToken] = useLocalStorage('authToken', null);
+  const [isLoggedIn, setIsLoggedIn] = useState(authToken);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  
+const navigate = useNavigate();
+
+useEffect(() => {
+  setIsLoggedIn(authToken);
+  if(authToken == null || authToken == undefined){
+    navigate('/auth/login')
+  }
+}, [authToken]);
+
+
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
