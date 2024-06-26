@@ -216,7 +216,7 @@ const ProjectsTable = () => {
                   type="button"
                   className="px-4 py-2 bg-[#F87171] text-white rounded-md hover:bg-primary-dark"
                   onClick={() => {
-                    setShowModal(false); // Zamknięcie modala po dodaniu projektu
+                    setShowModal(false); 
                   }}
                 >
                   Cancel
@@ -225,8 +225,8 @@ const ProjectsTable = () => {
                   type="button"
                   className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
                   onClick={() => {
-                    handleAddProject(); // Funkcja do dodawania projektu
-                    setShowModal(false); // Zamknięcie modala po dodaniu projektu
+                    handleAddProject(); 
+                    setShowModal(false);
                   }}
                 >
                   Add Project
