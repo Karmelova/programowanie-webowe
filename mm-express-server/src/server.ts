@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
+import authMiddleware from 'middleware/authMiddleware.js';
+import './types/express';
+
 
 dotenv.config();
 
@@ -19,10 +22,21 @@ app.use(cors({
 }));
 
 // Connect to MongoDB
-mongoose.connect(`${process.env.MONGODB_URI}?retryWrites=true&w=majority`, {
-});
+const mongoURI = process.env.MONGODB_URI;
+
+if (!mongoURI) {
+  throw new Error('MongoDB URI is not defined in environment variables');
+}
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+} as any);
+
+
+
 
 app.use('/api', authRoutes);
-app.use('/api', projectRoutes);
+app.use('/api', authMiddleware, projectRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

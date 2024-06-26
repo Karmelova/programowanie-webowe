@@ -2,33 +2,26 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import useAuth from '../../hooks/useAuth';
+
 
 const LogIn: React.FC = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const { login } = useAuth();
 
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useLocalStorage('authToken', '');
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
-        loginEmail,
-        loginPassword,
-      });
-      console.log('Zalogowano pomyślnie:', response.data.token);
-      setToken(response.data.token);
-    } catch (error: any) {
-      console.error(
-        'Błąd logowania:',
-        error.response?.data?.message || error.message,
-      );
+      await login(loginEmail, loginPassword);
+    } catch (error) {
+      console.error('Login error:', error);
     }
   };
 
@@ -41,11 +34,10 @@ const LogIn: React.FC = () => {
         email,
         password,
       });
-      console.log('Rejestracja pomyślna:', response.data.token);
-      setToken(response.data.token);
+      console.log('Register success:', response.data.token);
     } catch (error: any) {
       console.error(
-        'Błąd rejestracji:',
+        'Register error:',
         error.response?.data?.message || error.message,
       );
     }

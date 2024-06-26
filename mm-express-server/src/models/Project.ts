@@ -2,14 +2,12 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IProject extends Document {
   uuid: string;
-  id: number;
   name: string;
   description: string;
 }
 
 const ProjectSchema: Schema = new Schema({
   uuid: { type: String, required: true, unique: true },
-  id: { type: Number, required: true, unique: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
 });
