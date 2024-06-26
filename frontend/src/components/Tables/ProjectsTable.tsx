@@ -12,6 +12,8 @@ const ProjectsTable = () => {
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [currentDeleteProjectUuid, setCurrentDeleteProjectUuid] = useState('');
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -28,6 +30,9 @@ const ProjectsTable = () => {
 
   const handleToggleModal = () => {
     setShowModal(!showModal);
+  };
+  const handleToggleDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
   };
 
   const handleAddProject = async () => {
@@ -133,7 +138,12 @@ const ProjectsTable = () => {
                 </button>
                 <button
                   className="hover:text-primary"
-                  onClick={() => handleDeleteProject(project.uuid)}
+                  onClick={() => {
+                    handleToggleDeleteModal();
+                    setCurrentDeleteProjectUuid(project.uuid);
+                  }}
+
+                  // onClick={() => handleDeleteProject(project.uuid)}
                 >
                   <svg
                     className="fill-current"
@@ -216,7 +226,7 @@ const ProjectsTable = () => {
                   type="button"
                   className="px-4 py-2 bg-[#F87171] text-white rounded-md hover:bg-primary-dark"
                   onClick={() => {
-                    setShowModal(false); 
+                    setShowModal(false);
                   }}
                 >
                   Cancel
@@ -225,7 +235,7 @@ const ProjectsTable = () => {
                   type="button"
                   className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
                   onClick={() => {
-                    handleAddProject(); 
+                    handleAddProject();
                     setShowModal(false);
                   }}
                 >
@@ -236,6 +246,42 @@ const ProjectsTable = () => {
           </div>
         </div>
       )}
+      {/* end of modal add project */}
+      {/* Modal confirm delete project */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="absolute inset-0 bg-black opacity-70"></div>
+          <div className="relative bg-white shadow-default dark:border-strokedark dark:bg-boxdark dark:text-bodydark rounded-lg w-96 p-6">
+            <h3 className="font-medium text-black dark:text-white mb-4">
+              Delete Project
+            </h3>
+            <form>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-[#F87171] text-white rounded-md hover:bg-primary-dark"
+                  onClick={() => {
+                    handleDeleteProject(currentDeleteProjectUuid);
+                    setShowDeleteModal(false);
+                  }}
+                >
+                  Confirm
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* end of modal add project */}
     </div>
   );
 };
