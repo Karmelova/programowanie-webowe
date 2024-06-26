@@ -25,9 +25,7 @@ const register = async (req: Request, res: Response) => {
 
     await newUser.save();
 
-    const token = generateToken(newUser.uuid);
-
-    res.status(201).json({ token });
+    res.status(201);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

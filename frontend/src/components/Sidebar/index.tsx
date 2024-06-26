@@ -24,7 +24,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
-  console.log(isLoggedIn)
 
   const handleLogout = () => {
     setIsLoggedIn(null);

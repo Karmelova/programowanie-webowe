@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Project } from '../../types/project';
 import { getProjects, createProject, deleteProject, updateProject } from '../../api/Projects/projectService';
 
