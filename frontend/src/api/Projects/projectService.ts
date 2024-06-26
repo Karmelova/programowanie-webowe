@@ -41,3 +41,24 @@ export const updateProject = async (uuid: string, project: Project): Promise<Pro
     throw error;
   }
 };
+
+export const getUserActiveProject = async (): Promise<Project[]> => {
+  try {
+    const response = await api.get(`${PROJECTS_API_URL}/user/active-project`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    throw error; 
+  }
+};
+
+export const setUserActiveProject = async (projectUuid: string): Promise<Project[]> => {
+  try {
+    const response = await api.put(`${PROJECTS_API_URL}/user/active-project/${projectUuid}`);
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    throw error; 
+  }
+};

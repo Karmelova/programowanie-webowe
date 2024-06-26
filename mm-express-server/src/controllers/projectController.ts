@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Project, { IProject } from "../models/Project";
 import { v4 as uuidv4 } from "uuid";
+import User from "../models/User";
+
 
 export const getProjects = async (
   req: Request,
@@ -26,6 +28,41 @@ export const getProjectById = async (
     return res.json(project);
   } catch (error) {
     return res.status(500).json({ message: "Error fetching project", error });
+  }
+};
+
+export const getUserActiveProject = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.user?.id).populate('activeProject');
+
+    if (!user || !user.activeProject) {
+      return res.status(404).json({ message: 'No active project found' });
+    }
+
+    return res.json(user.activeProject);
+  } catch (error) {
+    return res.status(500).json({ message: 'Error getting user active project', error });
+  }
+};
+
+export const setUserActiveProject = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { projectUuid } = req.body;
+    const project = await Project.findOne({uuid: projectUuid});
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    const user = await User.findOneAndUpdate(
+      { uuid: req.user?.uuid },
+      { activeProject: projectUuid },
+      { new: true }
+    );
+
+    return res.json(user);
+  } catch (error) {
+    return res.status(500).json({ message: 'Error setting user active project', error });
   }
 };
 
