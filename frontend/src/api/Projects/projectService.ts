@@ -1,33 +1,23 @@
-import {Project} from "../../types/project";
-export default class ProjectService {
-  static getAllProjects(): Project[] {
-    return JSON.parse(localStorage.getItem("projects") || "[]");
-  }
+import axios from 'axios';
+import { Project } from '../../types/project';
 
-  static addProject(project: Project): void {
-    const projects = this.getAllProjects();
-    projects.push(project);
-    localStorage.setItem("projects", JSON.stringify(projects));
-  }
-  static deleteProject(uuid: string): void {
-    const projects = this.getAllProjects().filter(
-      (project) => project.uuid !== uuid
-    );
-    localStorage.setItem("projects", JSON.stringify(projects));
-  }
+const API_URL = 'http://localhost:5000/api/projects';
 
-  static updateProject(uuid: string, newData: Partial<Project>): void {
-    const projects = this.getAllProjects().map((project) => {
-      if (project.uuid === uuid) {
-        Object.assign(project, newData);
-      }
-      return project;
-    });
-    localStorage.setItem("projects", JSON.stringify(projects));
-  }
-  static getProject(uuid: string): Project | undefined {
-    const projects = this.getAllProjects();
-    const project = projects.find((project) => project.uuid === uuid);
-    return project;
-  }
-}
+export const getProjects = async (): Promise<Project[]> => {
+  const response = await axios.get(API_URL);
+  return response.data;
+};
+
+export const createProject = async (project: Project): Promise<Project> => {
+  const response = await axios.post(API_URL, project);
+  return response.data;
+};
+
+export const deleteProject = async (uuid: string): Promise<void> => {
+  await axios.delete(`${API_URL}/${uuid}`);
+};
+
+export const updateProject = async (uuid: string, project: Project): Promise<Project> => {
+  const response = await axios.put(`${API_URL}/${uuid}`, project);
+  return response.data;
+};

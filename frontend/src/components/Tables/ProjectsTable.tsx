@@ -1,9 +1,54 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Project } from '../../types/project';
-
-const projectsData: Project[] = [
-];
+import { getProjects, createProject, deleteProject, updateProject } from '../../api/Projects/projectService';
 
 const ProjectsTable = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [newProjectName, setNewProjectName] = useState('');
+  const [newProjectDescription, setNewProjectDescription] = useState('');
+
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const projectsData = await getProjects();
+        setProjects(projectsData);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const handleAddProject = async () => {
+    const newProject = {
+      uuid:'',
+      name: newProjectName,
+      description: newProjectDescription,
+    };
+
+    try {
+      const createdProject = await createProject(newProject);
+      setProjects([...projects, createdProject]);
+      setNewProjectName('');
+      setNewProjectDescription('');
+    } catch (error) {
+      console.error('Error creating project:', error);
+    }
+  };
+
+  const handleDeleteProject = async (uuid: string) => {
+    try {
+      await deleteProject(uuid);
+      setProjects(projects.filter(project => project.uuid !== uuid));
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    }
+  };
+
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="flex flex-row justify-between">
@@ -34,11 +79,11 @@ const ProjectsTable = () => {
           </div>
         </div>
 
-        {projectsData.length > 0 ? (
-          projectsData.map((project, key) => (
+        {projects.length > 0  ? (
+          projects.map((project, key) => (
             <div
               className={`grid grid-cols-3 sm:grid-cols-3 ${
-                key === projectsData.length - 1
+                key === projects.length - 1
                   ? ''
                   : 'border-b border-stroke dark:border-strokedark'
               }`}
@@ -51,7 +96,7 @@ const ProjectsTable = () => {
               </div>
 
               <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{project.id}K</p>
+                <p className="text-black dark:text-white">{project.uuid}K</p>
               </div>
 
               <div className="flex items-center justify-center space-x-3.5">
@@ -74,7 +119,7 @@ const ProjectsTable = () => {
                     />
                   </svg>
                 </button>
-                <button className="hover:text-primary">
+                <button className="hover:text-primary" onClick={() => handleDeleteProject(project.uuid)}>
                   <svg
                     className="fill-current"
                     width="18"
