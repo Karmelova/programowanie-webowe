@@ -4,9 +4,12 @@ import {
   getProjects,
   createProject,
   deleteProject,
+  setUserActiveProject,
 } from '../../api/Projects/projectService';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectsTable = () => {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
@@ -116,7 +119,15 @@ const ProjectsTable = () => {
               </div>
 
               <div className="flex items-center justify-center space-x-3.5">
-                <button className="hover:text-primary">
+                <button
+                  className="hover:text-primary"
+                  onClick={() => {
+                    setUserActiveProject(project.uuid);
+                    setTimeout(() => {
+                      navigate(`/projects/${project.uuid}`);
+                    }, 1000);
+                  }}
+                >
                   <svg
                     className="fill-current"
                     width="18"
