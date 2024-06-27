@@ -47,13 +47,24 @@ export const getUserActiveProject = async (req: Request, res: Response) => {
 
 export const setUserActiveProject = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { projectUuid } = req.body;
+    const { projectUuid } = req.params;
     const project = await Project.findOne({uuid: projectUuid});
+    console.log('pr'+projectUuid)
 
-    if (!project) {
+    if(projectUuid=='not-set'){
+      const user = await User.findOneAndUpdate(
+        { uuid: req.user?.uuid },
+        { activeProject: '' },
+        { new: true }
+      );
+      return res.json(user);
+    }
+    else if (!project) {
       return res.status(404).json({ message: 'Project not found' });
     }
-
+    else{
+      
+    }
     const user = await User.findOneAndUpdate(
       { uuid: req.user?.uuid },
       { activeProject: projectUuid },

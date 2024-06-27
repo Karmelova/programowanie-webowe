@@ -17,7 +17,7 @@ router.get('/projects/:id', getProjectById);
 router.post('/projects', createProject);
 router.put('/projects/:uuid', updateProject);
 router.delete('/projects/:uuid', deleteProject);
-router.get('/projects/user/active-project', authMiddleware, getUserActiveProject);
-router.post('/projects/user/active-project/:projectUuid', authMiddleware, setUserActiveProject);
+router.get('/projects/user/active-project', getUserActiveProject);
+router.put('/projects/user/active-project/:projectUuid', setUserActiveProject);
 
 export default router;

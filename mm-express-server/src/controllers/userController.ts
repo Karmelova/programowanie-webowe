@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import User, { IUser } from '../models/User';
-import { generateToken } from '../utils/authUtils';
 
 const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;

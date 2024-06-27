@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Project } from '../../types/project';
 import {
   getProjects,
   createProject,
   deleteProject,
-  updateProject,
-  getUserActiveProject,
 } from '../../api/Projects/projectService';
 
 const ProjectsTable = () => {
@@ -83,7 +81,7 @@ const ProjectsTable = () => {
               Name
             </h5>
           </div>
-          <div className="p-2.5 text-center xl:p-5">
+          <div className="p-2.5 text-left xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
               Description
             </h5>

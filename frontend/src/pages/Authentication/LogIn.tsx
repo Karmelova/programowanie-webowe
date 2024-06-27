@@ -5,7 +5,6 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { getUserActiveProject } from '../../api/Projects/projectService';
-import api from '../../config/api';
 
 
 const LogIn = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../images/logo/logo.png';
 import useAuth from '../../hooks/useAuth';
@@ -10,7 +10,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  const { login, logout } = useAuth();
+  const { logout } = useAuth();
   const [authToken] = useLocalStorage('authToken', null);
   const [isLoggedIn, setIsLoggedIn] = useState(authToken);
   const location = useLocation();
@@ -121,7 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <div className="flex flex-col justify-between h-full">
             {isLoggedIn && (
               <ul className="mb-6 flex flex-col gap-1.5">
-                {/* <!-- Menu Item Dashboard --> */}
+                {/* <!-- Menu Item Projects --> */}
                 <li>
                   <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                     MENU
@@ -157,10 +157,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         fill=""
                       />
                     </svg>
-                    Dashboard
+                    Projects
                   </NavLink>
                 </li>
-                {/* <!-- Menu Item Dashboard --> */}
+                {/* <!-- Menu Item Projects --> */}
 
                 {/* <!-- Menu Item Settings --> */}
                 <li>
