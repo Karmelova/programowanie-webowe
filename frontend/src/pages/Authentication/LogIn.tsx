@@ -4,6 +4,8 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { getUserActiveProject } from '../../api/Projects/projectService';
+import api from '../../config/api';
 
 
 const LogIn = () => {
@@ -18,13 +20,32 @@ const LogIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+  const handleFetchActiveProject = async () => {
+    try{
+      const response = await getUserActiveProject();
+      if(response!=null || response!=undefined){
+        setTimeout(() => {
+          navigate(`/projects/${response.toString().replaceAll('"','').trim()}`);
+        }, 1000);
+      }
+    }catch (error) {
+      console.error('Error fetching projects:', error);
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
+    }
+  }
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await login(loginEmail, loginPassword);
       setTimeout(() => {
-        navigate('/');
+        handleFetchActiveProject();
       }, 1000);
+      
+      
     } catch (error) {
       console.error('Login error:', error);
     }

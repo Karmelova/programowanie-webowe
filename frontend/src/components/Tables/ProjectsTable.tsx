@@ -15,7 +15,6 @@ const ProjectsTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [currentDeleteProjectUuid, setCurrentDeleteProjectUuid] = useState('');
-  const [activeProject, setActiveProject] = useState('');
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -28,19 +27,6 @@ const ProjectsTable = () => {
     };
 
     fetchProjects();
-  }, []);
-
-  useEffect(() => {
-    const fetchActiveProject = async () => {
-      try {
-        const response = await getUserActiveProject();
-        setActiveProject(response.toString())
-      } catch (error) {
-        console.error('Error fetching projects:', error);
-      }
-    };
-
-    fetchActiveProject();
   }, []);
 
   const handleToggleModal = () => {
