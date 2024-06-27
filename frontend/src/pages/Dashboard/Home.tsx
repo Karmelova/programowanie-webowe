@@ -1,8 +1,6 @@
 import React from 'react';
 import ProjectsTable from '../../components/Tables/ProjectsTable';
 import DefaultLayout from '../../layout/DefaultLayout';
-import useLocalStorage from '../../hooks/useLocalStorage';
-import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
 
