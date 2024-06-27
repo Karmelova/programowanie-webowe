@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
+import storyRoutes from './routes/storyRoutes.js';
+import taskRoutes from './routes/taskRoutes.js';
 import authMiddleware from './middleware/authMiddleware.js';
 
 
@@ -37,5 +39,7 @@ mongoose.connect(mongoURI, {
 
 app.use('/api', authRoutes);
 app.use('/api', authMiddleware, projectRoutes);
+app.use('/api', authMiddleware, storyRoutes);
+app.use('/api', authMiddleware, taskRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
