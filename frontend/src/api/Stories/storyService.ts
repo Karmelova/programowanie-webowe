@@ -1,32 +1,45 @@
-import Story from "../../types/story";
-export default class StoryService {
-  static getAllStories(): Story[] {
-    return JSON.parse(localStorage.getItem("stories") || "[]");
-  }
+import api from '../../config/api';
+import { Story } from '../../types/story';
 
-  static addStory(story: Story): void {
-    const stories = this.getAllStories();
-    stories.push(story);
-    localStorage.setItem("stories", JSON.stringify(stories));
-  }
+const STORIES_API_URL = '/stories';
 
-  static deleteStory(uuid: string): void {
-    const stories = this.getAllStories().filter((story) => story.uuid !== uuid);
-    localStorage.setItem("stories", JSON.stringify(stories));
+export const getStories = async (): Promise<Story[]> => {
+  try {
+    const response = await api.get(STORIES_API_URL);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching stories:', error);
+    throw error;
   }
+};
 
-  static updateStory(uuid: string, newData: Partial<Story>): void {
-    const stories = this.getAllStories().map((story) => {
-      if (story.uuid === uuid) {
-        Object.assign(story, newData);
-      }
-      return story;
-    });
-    localStorage.setItem("stories", JSON.stringify(stories));
+export const createStory = async (story: Story): Promise<Story> => {
+  try {
+    const response = await api.post(STORIES_API_URL, story);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating story:', error);
+    throw error;
   }
+};
 
-  static getStory(uuid: string): Story | undefined {
-    const stories = this.getAllStories();
-    return stories.find((story) => story.uuid === uuid);
+export const deleteStory = async (uuid: string): Promise<void> => {
+  try {
+    await api.delete(`${STORIES_API_URL}/${uuid}`);
+  } catch (error) {
+    console.error('Error deleting story:', error);
+    throw error;
   }
-}
+};
+
+export const updateStory = async (uuid: string, story: Story): Promise<Story> => {
+  try {
+    const response = await api.put(`${STORIES_API_URL}/${uuid}`, story);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating story:', error);
+    throw error;
+  }
+};
+
+
