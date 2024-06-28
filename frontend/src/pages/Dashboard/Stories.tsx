@@ -33,10 +33,6 @@ const Stories: React.FC = () => {
     setShowAddModal(true);
   };
 
-  const closeAddStoryModal = () => {
-    setShowAddModal(false);
-  };
-
   return (
     <DefaultLayout>
       <Breadcrumb

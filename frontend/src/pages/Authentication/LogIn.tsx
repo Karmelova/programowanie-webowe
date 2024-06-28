@@ -25,7 +25,7 @@ const LogIn = () => {
       const response = await getUserActiveProject();
       if(response!=null || response!=undefined){
         setTimeout(() => {
-          navigate(`/projects/${response.toString().replaceAll('"','').trim()}`);
+          navigate(`/projects/${response}/stories`);
         }, 100);
       }
     }catch (error) {

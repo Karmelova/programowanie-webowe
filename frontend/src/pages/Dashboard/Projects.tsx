@@ -143,7 +143,7 @@ const Projects: React.FC = () => {
                         onClick={() => {
                           setUserActiveProject(project.uuid);
                           setTimeout(() => {
-                            navigate(`/projects/${project.uuid}`);
+                            navigate(`/projects/${project.uuid}/stories`);
                           }, 1000);
                         }}
                       >

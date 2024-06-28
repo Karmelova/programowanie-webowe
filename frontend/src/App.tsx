@@ -56,7 +56,7 @@ function App() {
         />
 
         <Route
-          path="/projects/:uuid"
+          path="/projects/:uuid/stories"
           element={
             <>
               <PageTitle title="Stories Kanban | ManageMe" />
