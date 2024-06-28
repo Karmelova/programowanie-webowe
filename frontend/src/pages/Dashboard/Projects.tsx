@@ -4,7 +4,7 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { setUserActiveProject } from '../../api/Projects/projectService';
 
-const Home: React.FC = () => {
+const Projects: React.FC = () => {
   useEffect(() => {
     const clearActiveProject = async () => {
       try {
@@ -30,4 +30,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Projects;

@@ -4,7 +4,8 @@ import Story from '../models/Story';
 
 export const getStories = async (req: Request, res: Response) => {
   try {
-    const stories = await Story.find();
+    const {projectUuid} = req.params
+    const stories = await Story.find({ projectUuid: projectUuid });
     res.json(stories);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching stories', error });

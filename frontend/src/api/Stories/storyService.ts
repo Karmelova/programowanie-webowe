@@ -3,9 +3,9 @@ import { Story } from '../../types/story';
 
 const STORIES_API_URL = '/stories';
 
-export const getStories = async (): Promise<Story[]> => {
+export const getStories = async (projectUuid: String): Promise<Story[]> => {
   try {
-    const response = await api.get(STORIES_API_URL);
+    const response = await api.get(`${STORIES_API_URL}/${projectUuid}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching stories:', error);
