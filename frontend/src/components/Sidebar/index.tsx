@@ -161,6 +161,29 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </NavLink>
                 </li>
                 {/* <!-- Menu Item Projects --> */}
+                {/* <!-- Menu Item Stories --> */}
+                <li>
+                  <NavLink
+                    to="/projects/:uuid"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                      !(pathname.length > 1) && 'bg-graydark dark:bg-meta-4'
+                    }`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 576 512"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path fill="#ffffff" d="M208 80c0-26.5 21.5-48 48-48h64c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-8v40H464c30.9 0 56 25.1 56 56v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H464c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-4.4-3.6-8-8-8H312v40h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H256c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V280H112c-4.4 0-8 3.6-8 8v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-30.9 25.1-56 56-56H264V192h-8c-26.5 0-48-21.5-48-48V80z"/>
+  
+                    </svg>
+                    Stories
+                  </NavLink>
+                </li>
+                {/* <!-- Menu Item Stories --> */}
 
                 {/* <!-- Menu Item Kanban --> */}
                 <li>
