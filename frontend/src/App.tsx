@@ -4,9 +4,9 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import LogIn from './pages/Authentication/LogIn';
-import Home from './pages/Dashboard/Home';
 import Settings from './pages/Settings';
-import Kanban from './pages/Dashboard/Kanban';
+import Stories from './pages/Dashboard/Stories';
+import Projects from './pages/Dashboard/Projects';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,7 +30,7 @@ function App() {
           element={
             <>
               <PageTitle title="Projects | ManageMe" />
-              <Home />
+              <Projects />
             </>
           }
         />
@@ -59,8 +59,8 @@ function App() {
           path="/projects/:uuid"
           element={
             <>
-              <PageTitle title="Project Kanban | ManageMe" />
-              <Kanban />
+              <PageTitle title="Stories Kanban | ManageMe" />
+              <Stories />
             </>
           }
         />
