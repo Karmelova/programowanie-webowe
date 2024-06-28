@@ -8,6 +8,7 @@ import { getUserActiveProject } from '../../api/Projects/projectService';
 const Stories: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);
   const [newStoryName, setNewStoryName] = useState('');
+  const [activeProject, setactiveProject] = useState('');
   const [newStoryDescription, setNewStoryDescription] = useState('');
   const [newStoryPriority, setNewStoryPriority] =
     useState<Story['priority']>('low');
@@ -27,7 +28,7 @@ const Stories: React.FC = () => {
       name: newStoryName,
       description: newStoryDescription,
       priority: newStoryPriority,
-      projectUuid: stories.toString(),
+      projectUuid: activeProject,
       status: newStoryStatus,
       creationDate: new Date(),
       owner: '',
@@ -50,9 +51,9 @@ const Stories: React.FC = () => {
     const fetchStories = async () => {
       try {
         const activeUserStory = await getUserActiveProject();
-
+        setactiveProject(activeUserStory.toString())
         //@ts-ignore
-        const data = await getStories(activeUserStory);
+        const data = await getStories(activeUserStory.toString());
         setStories(data);
       } catch (error) {
         console.error('Error fetching stories:', error);

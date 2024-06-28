@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 
 export const getStories = async (req: Request, res: Response) => {
   try {
-    
-    const stories = await Story.find();
+    const activeProjectUuid = req.user?.activeProject;
+    const stories = await Story.find({ projectUuid: { $in: [activeProjectUuid] } });
     res.json(stories);
   } catch (error) {
     res.status(500).json({ message: "Error fetching stories", error });
