@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../images/logo/logo.png';
 import useAuth from '../../hooks/useAuth';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { getUserActiveProject } from '../../api/Projects/projectService';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -13,10 +14,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { logout } = useAuth();
   const [authToken] = useLocalStorage('authToken', null);
   const [isLoggedIn, setIsLoggedIn] = useState(authToken);
+  const [activeProject, setActiveProject] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
-
+  const [storyPath, setStoryPath] = useState('/');
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
 
@@ -72,6 +74,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   useEffect(() => {
     setIsLoggedIn(authToken);
   }, [authToken]);
+
+  // get active project to set proper nav to stories/kanban/tasks
+  useEffect(() => {
+    const handleFetchActiveProject = async () => {
+      try {
+        const response = await getUserActiveProject();
+        if (response != null || response != undefined) {
+          setActiveProject(response.toString());
+          const newStoryPath = '/projects/' + response.toString();
+          setStoryPath(newStoryPath);
+        }
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+    handleFetchActiveProject();
+  }, []);
 
   return (
     <aside
@@ -129,7 +148,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <NavLink
                     to="/"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      !(pathname.length > 1) && 'bg-graydark dark:bg-meta-4'
+                      (pathname.length < 2) && 'bg-graydark dark:bg-meta-4'
                     }`}
                   >
                     <svg
@@ -164,9 +183,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 {/* <!-- Menu Item Stories --> */}
                 <li>
                   <NavLink
-                    to="/projects/:uuid"
+                    to={storyPath}
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      !(pathname.length > 1) && 'bg-graydark dark:bg-meta-4'
+                      (pathname.includes('projects/'+ activeProject)) && 'bg-graydark dark:bg-meta-4'
                     }`}
                   >
                     <svg
@@ -190,7 +209,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <NavLink
                     to="/projects/:uuid"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      !(pathname.length > 1) && 'bg-graydark dark:bg-meta-4'
+                      (pathname == `/projects/${activeProject}`) && 'bg-graydark dark:bg-meta-4'
                     }`}
                   >
                     <svg
