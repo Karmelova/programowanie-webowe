@@ -26,13 +26,13 @@ const LogIn = () => {
       if(response!=null || response!=undefined){
         setTimeout(() => {
           navigate(`/projects/${response.toString().replaceAll('"','').trim()}`);
-        }, 1000);
+        }, 100);
       }
     }catch (error) {
       console.error('Error fetching projects:', error);
       setTimeout(() => {
         navigate('/');
-      }, 1000);
+      }, 100);
     }
   }
 
