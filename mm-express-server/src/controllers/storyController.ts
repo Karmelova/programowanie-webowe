@@ -59,6 +59,7 @@ export const createStory = async (
 export const updateStory = async (req: Request, res: Response) => {
   try {
     const {
+      uuid,
       name,
       description,
       priority,
@@ -67,8 +68,8 @@ export const updateStory = async (req: Request, res: Response) => {
       status,
       owner,
     } = req.body;
-    const updatedStory = await Story.findByIdAndUpdate(
-      req.params.id,
+    const updatedStory = await Story.findOneAndUpdate(
+      { uuid: req.params.id },
       { name, description, priority, projectUuid, creationDate, status, owner },
       { new: true }
     );
