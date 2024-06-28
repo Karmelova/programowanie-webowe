@@ -73,24 +73,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   //auth buttons
   useEffect(() => {
     setIsLoggedIn(authToken);
+    if (authToken) {
+      handleFetchActiveProject();
+    }
   }, [authToken]);
 
   // get active project to set proper nav to stories/kanban/tasks
-  useEffect(() => {
-    const handleFetchActiveProject = async () => {
-      try {
-        const response = await getUserActiveProject();
-        if (response != null || response != undefined) {
-          setActiveProject(response.toString());
-          const newStoryPath = '/projects/' + response.toString() +'/stories';
-          setStoryPath(newStoryPath);
-        }
-      } catch (error) {
-        console.error('Error fetching projects:', error);
+  const handleFetchActiveProject = async () => {
+    try {
+      const response = await getUserActiveProject();
+      if (response != null || response != undefined) {
+        setActiveProject(response.toString());
+        const newStoryPath = '/projects/' + response.toString() + '/stories';
+        setStoryPath(newStoryPath);
       }
-    };
-    handleFetchActiveProject();
-  }, []);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+  };
 
   return (
     <aside
@@ -148,7 +148,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <NavLink
                     to="/"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      (pathname.length < 2) && 'bg-graydark dark:bg-meta-4'
+                      pathname.length < 2 && 'bg-graydark dark:bg-meta-4'
                     }`}
                   >
                     <svg
@@ -185,7 +185,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <NavLink
                     to={storyPath}
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      (pathname.includes('projects/'+ activeProject+ '/stories')) && 'bg-graydark dark:bg-meta-4'
+                      pathname.includes(
+                        'projects/' + activeProject + '/stories',
+                      ) && 'bg-graydark dark:bg-meta-4'
                     }`}
                   >
                     <svg
@@ -196,8 +198,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path fill="#ffffff" d="M208 80c0-26.5 21.5-48 48-48h64c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-8v40H464c30.9 0 56 25.1 56 56v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H464c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-4.4-3.6-8-8-8H312v40h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H256c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V280H112c-4.4 0-8 3.6-8 8v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-30.9 25.1-56 56-56H264V192h-8c-26.5 0-48-21.5-48-48V80z"/>
-  
+                      <path
+                        fill="#ffffff"
+                        d="M208 80c0-26.5 21.5-48 48-48h64c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-8v40H464c30.9 0 56 25.1 56 56v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H464c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-4.4-3.6-8-8-8H312v40h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H256c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V280H112c-4.4 0-8 3.6-8 8v32h8c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V368c0-26.5 21.5-48 48-48h8V288c0-30.9 25.1-56 56-56H264V192h-8c-26.5 0-48-21.5-48-48V80z"
+                      />
                     </svg>
                     Stories
                   </NavLink>
@@ -209,7 +213,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <NavLink
                     to="/projects/:uuid"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      (pathname == `/projects/${activeProject}`) && 'bg-graydark dark:bg-meta-4'
+                      pathname == `/projects/${activeProject}` &&
+                      'bg-graydark dark:bg-meta-4'
                     }`}
                   >
                     <svg
@@ -220,8 +225,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path fill="#ffffff" d="M 0 96 C 0 60.7 28.7 32 64 32 H 448 c 35.3 0 64 28.7 64 64 V 416 c 0 35.3 -28.7 64 -64 64 H 64 c -35.3 0 -64 -28.7 -64 -64 V 96 z m 64 64 V 416 H 243 V 91 H 64 z m 180 -69 H 267 V 416 H 448 V 92 z"/>
-  
+                      <path
+                        fill="#ffffff"
+                        d="M 0 96 C 0 60.7 28.7 32 64 32 H 448 c 35.3 0 64 28.7 64 64 V 416 c 0 35.3 -28.7 64 -64 64 H 64 c -35.3 0 -64 -28.7 -64 -64 V 96 z m 64 64 V 416 H 243 V 91 H 64 z m 180 -69 H 267 V 416 H 448 V 92 z"
+                      />
                     </svg>
                     Kanban
                   </NavLink>
