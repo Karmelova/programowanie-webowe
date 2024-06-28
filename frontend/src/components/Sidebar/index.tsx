@@ -162,6 +162,30 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </li>
                 {/* <!-- Menu Item Projects --> */}
 
+                {/* <!-- Menu Item Kanban --> */}
+                <li>
+                  <NavLink
+                    to="/projects/:uuid"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                      !(pathname.length > 1) && 'bg-graydark dark:bg-meta-4'
+                    }`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 512 512"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path fill="#ffffff" d="M 0 96 C 0 60.7 28.7 32 64 32 H 448 c 35.3 0 64 28.7 64 64 V 416 c 0 35.3 -28.7 64 -64 64 H 64 c -35.3 0 -64 -28.7 -64 -64 V 96 z m 64 64 V 416 H 243 V 91 H 64 z m 180 -69 H 267 V 416 H 448 V 92 z"/>
+  
+                    </svg>
+                    Kanban
+                  </NavLink>
+                </li>
+                {/* <!-- Menu Item Kanban --> */}
+
                 {/* <!-- Menu Item Settings --> */}
                 <li>
                   <NavLink

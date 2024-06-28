@@ -6,6 +6,7 @@ import PageTitle from './components/PageTitle';
 import LogIn from './pages/Authentication/LogIn';
 import Home from './pages/Dashboard/Home';
 import Settings from './pages/Settings';
+import Kanban from './pages/Dashboard/Kanban';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -50,6 +51,16 @@ function App() {
             <>
               <PageTitle title="Log In | ManageMe" />
               <LogIn />
+            </>
+          }
+        />
+
+        <Route
+          path="/projects/:uuid"
+          element={
+            <>
+              <PageTitle title="Project Kanban | ManageMe" />
+              <Kanban />
             </>
           }
         />
