@@ -3,6 +3,9 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 const getToken = () => {
@@ -22,7 +25,7 @@ const getToken = () => {
       return response;
     },
     (error) => {
-      if (error.response?.status === 403 && error.response.data.message === "Invalid token") {
+      if (error.response?.status === 403) {
         localStorage.removeItem('authToken');
         window.location.href = '/auth/login';
       }

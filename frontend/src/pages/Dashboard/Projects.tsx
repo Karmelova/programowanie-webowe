@@ -310,7 +310,7 @@ const Projects: React.FC = () => {
                 </div>
               </div>
             )}
-            {/* end of modal add project */}
+            {/* end of modal delete project */}
           </div>
         </div>
       </div>

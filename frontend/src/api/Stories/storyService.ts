@@ -3,9 +3,9 @@ import { Story } from '../../types/story';
 
 const STORIES_API_URL = '/stories';
 
-export const getStories = async (projectUuid: String): Promise<Story[]> => {
+export const getStories = async (): Promise<Story[]> => {
   try {
-    const response = await api.get(`${STORIES_API_URL}/${projectUuid}`);
+    const response = await api.get(STORIES_API_URL);
     return response.data;
   } catch (error) {
     console.error('Error fetching stories:', error);
@@ -15,6 +15,7 @@ export const getStories = async (projectUuid: String): Promise<Story[]> => {
 
 export const createStory = async (story: Story): Promise<Story> => {
   try {
+    console.log(story);
     const response = await api.post(STORIES_API_URL, story);
     return response.data;
   } catch (error) {
@@ -32,7 +33,10 @@ export const deleteStory = async (uuid: string): Promise<void> => {
   }
 };
 
-export const updateStory = async (uuid: string, story: Story): Promise<Story> => {
+export const updateStory = async (
+  uuid: string,
+  story: Story,
+): Promise<Story> => {
   try {
     const response = await api.put(`${STORIES_API_URL}/${uuid}`, story);
     return response.data;
@@ -41,5 +45,3 @@ export const updateStory = async (uuid: string, story: Story): Promise<Story> =>
     throw error;
   }
 };
-
-

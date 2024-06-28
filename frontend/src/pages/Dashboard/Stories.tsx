@@ -1,19 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import DefaultLayout from '../../layout/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import { getStories } from '../../api/Stories/storyService';
+import { createStory, getStories } from '../../api/Stories/storyService';
 import { Story } from '../../types/story';
 import { getUserActiveProject } from '../../api/Projects/projectService';
 
 const Stories: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);
+  const [newStoryName, setNewStoryName] = useState('');
+  const [newStoryDescription, setNewStoryDescription] = useState('');
+  const [newStoryPriority, setNewStoryPriority] =
+    useState<Story['priority']>('low');
+  const [newStoryStatus, setNewStoryStatus] = useState<Story['status']>('todo');
+
   const [showAddModal, setShowAddModal] = useState(false);
+
+  const columns = [
+    { title: 'To Do', status: 'todo' },
+    { title: 'Doing', status: 'doing' },
+    { title: 'Done', status: 'done' },
+  ];
+
+  const handleAddStory = async () => {
+    const newStory = {
+      uuid: '',
+      name: newStoryName,
+      description: newStoryDescription,
+      priority: newStoryPriority,
+      projectUuid: stories.toString(),
+      status: newStoryStatus,
+      creationDate: new Date(),
+      owner: '',
+    };
+
+    try {
+      console.log(newStory);
+      const createdStory = await createStory(newStory);
+      console.log(createdStory);
+      setStories([...stories, createdStory]);
+      setNewStoryName('');
+      setNewStoryDescription('');
+      setNewStoryPriority('low');
+    } catch (error) {
+      console.error('Error creating story:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchStories = async () => {
       try {
         const activeUserStory = await getUserActiveProject();
-        const data = await getStories(activeUserStory.toString());
+
+        //@ts-ignore
+        const data = await getStories(activeUserStory);
         setStories(data);
       } catch (error) {
         console.error('Error fetching stories:', error);
@@ -22,12 +61,6 @@ const Stories: React.FC = () => {
 
     fetchStories();
   }, []);
-
-  const columns = [
-    { title: 'To Do', status: 'todo' },
-    { title: 'Doing', status: 'doing' },
-    { title: 'Done', status: 'done' },
-  ];
 
   const handlePlusClick = () => {
     setShowAddModal(true);
@@ -41,28 +74,30 @@ const Stories: React.FC = () => {
       />
       <div className="flex gap-4">
         {columns.map((column) => (
-          <div
-            className="w-1/3 p-2 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none rounded-lg text-center justify-center relative"
-            key={column.status}
-          >
-            <h2 className="text-xl font-bold ">{column.title}</h2>
-            {column.status === 'todo' && (
-              <div className="absolute w-4 p-2 -top-0.5  -top-0.">
-                <button className="absolute w-4" onClick={handlePlusClick}>
-                  <p className=" font-bold text-2xl">+</p>
-                </button>
-              </div>
-            )}
-            <div className="space-y-4">
+          <div className="w-1/3 p-2 rounded-lg text-center justify-center relative">
+            <div
+              className="w-full p-2 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none rounded-lg text-center justify-center relative"
+              key={column.status}
+            >
+              <h2 className="text-xl font-bold text-black dark:text-white">{column.title}</h2>
+              {column.status === 'todo' && (
+                <div className="absolute w-4 p-2 -top-0.5  -top-0.">
+                  <button className="absolute w-4" onClick={handlePlusClick}>
+                    <p className=" font-bold text-2xl">+</p>
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="space-y-4 mt-3">
               {stories
                 .filter((story) => story.status === column.status)
                 .map((story) => (
                   <div
                     key={story.uuid}
-                    className="p-4 bg-white rounded-lg shadow"
+                    className="p-4 bg-[#E6E7E8] dark:bg-[#444B54] text-black dark:text-white rounded-lg shadow"
                   >
                     <h3 className="font-semibold">{story.name}</h3>
-                    <p className="text-sm text-gray-600">{story.description}</p>
+                    <p className="text-sm text-black dark:text-white">{story.description}</p>
                   </div>
                 ))}
             </div>
@@ -77,37 +112,61 @@ const Stories: React.FC = () => {
             <h3 className="font-medium text-black dark:text-white mb-4">
               Add New Story
             </h3>
-            <form>
+            <form onSubmit={handleAddStory}>
               <div className="mb-4">
                 <label
-                  htmlFor="projectName"
+                  htmlFor="storyName"
                   className="mb-3 block text-black dark:text-white"
                 >
                   Name
                 </label>
                 <input
                   type="text"
-                  id="projectName"
+                  id="storyName"
+                  name="name"
+                  value={newStoryName}
+                  onChange={(e) => setNewStoryName(e.target.value)}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  // value={newProjectName}
-                  // onChange={(e) => setNewProjectName(e.target.value)}
                 />
               </div>
+
               <div className="mb-4">
                 <label
-                  htmlFor="projectDescription"
+                  htmlFor="storyDescription"
                   className="mb-3 block text-black dark:text-white"
                 >
                   Description
                 </label>
                 <textarea
-                  id="projectDescription"
+                  id="storyDescription"
+                  name="description"
+                  value={newStoryDescription}
+                  onChange={(e) => setNewStoryDescription(e.target.value)}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  value={newProjectDescription}
-                  // onChange={(e) => setNewProjectDescription(e.target.value)}
                 />
               </div>
-              <div className="flex justify-between">
+              <div className="mb-4">
+                <label
+                  htmlFor="storyPriority"
+                  className="mb-3 block text-black dark:text-white"
+                >
+                  Priority
+                </label>
+                <select
+                  id="storyPriority"
+                  name="priority"
+                  value={newStoryPriority}
+                  onChange={(e) =>
+                    setNewStoryPriority(e.target.value as Story['priority'])
+                  }
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+              <div className="flex justify-between mt-4">
                 <button
                   type="button"
                   className="px-4 py-2 bg-[#F87171] text-white rounded-md hover:bg-primary-dark"
@@ -119,13 +178,13 @@ const Stories: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
                   onClick={() => {
-                    // handleAddProject();
+                    handleAddStory();
                     setShowAddModal(false);
                   }}
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
                 >
-                  Add Project
+                  Add Story
                 </button>
               </div>
             </form>

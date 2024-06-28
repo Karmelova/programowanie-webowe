@@ -49,7 +49,6 @@ export const setUserActiveProject = async (req: Request, res: Response): Promise
   try {
     const { projectUuid } = req.params;
     const project = await Project.findOne({uuid: projectUuid});
-    console.log('pr'+projectUuid)
 
     if(projectUuid=='not-set'){
       const user = await User.findOneAndUpdate(
