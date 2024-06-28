@@ -4,8 +4,12 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import LogIn from './pages/Authentication/LogIn';
-import ECommerce from './pages/Dashboard/Home';
 import Settings from './pages/Settings';
+import Stories from './pages/Dashboard/Stories';
+import Projects from './pages/Dashboard/Projects';
+import Kanban from './pages/Dashboard/Kanban';
+import StoryDetails from './pages/Dashboard/StoryDetails';
+import TaskDetails from './pages/Dashboard/TaskDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,7 +33,7 @@ function App() {
           element={
             <>
               <PageTitle title="Projects | ManageMe" />
-              <ECommerce />
+              <Projects />
             </>
           }
         />
@@ -50,6 +54,44 @@ function App() {
             <>
               <PageTitle title="Log In | ManageMe" />
               <LogIn />
+            </>
+          }
+        />
+
+        <Route
+          path="/projects/:uuid/stories"
+          element={
+            <>
+              <PageTitle title="Stories Kanban | ManageMe" />
+              <Stories />
+            </>
+          }
+        />
+
+        <Route
+          path="/stories/:uuid"
+          element={
+            <>
+              <PageTitle title="Story Details | ManageMe" />
+              <StoryDetails />
+            </>
+          }
+        />
+        <Route
+          path="/tasks/:uuid"
+          element={
+            <>
+              <PageTitle title="Task Details | ManageMe" />
+              <TaskDetails />
+            </>
+          }
+        />
+      <Route
+          path="/projects/kanban"
+          element={
+            <>
+              <PageTitle title="Project Kanban | ManageMe" />
+              <Kanban />
             </>
           }
         />

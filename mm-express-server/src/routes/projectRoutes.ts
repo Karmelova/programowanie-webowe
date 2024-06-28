@@ -1,12 +1,22 @@
 import { Router } from 'express';
-import { getProjects, getProjectById, createProject, updateProject, deleteProject } from '../controllers/projectController';
+import {
+  getProjects,
+  getProjectById,
+  createProject,
+  updateProject,
+  deleteProject,
+  getUserActiveProject,
+  setUserActiveProject,
+} from '../controllers/projectController';
 
-const router: Router = Router();
+const router = Router();
 
 router.get('/projects', getProjects);
 router.get('/projects/:id', getProjectById);
 router.post('/projects', createProject);
-router.put('/projects/:id', updateProject);
-router.delete('/projects/:id', deleteProject);
+router.put('/projects/:uuid', updateProject);
+router.delete('/projects/:uuid', deleteProject);
+router.get('/projects/user/active-project', getUserActiveProject);
+router.put('/projects/user/active-project/:projectUuid', setUserActiveProject);
 
 export default router;

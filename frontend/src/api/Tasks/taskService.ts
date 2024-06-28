@@ -1,32 +1,60 @@
-import Task from "../../types/tasks";
-export default class TaskService {
-  static getAllTasks(): Task[] {
-    return JSON.parse(localStorage.getItem("tasks") || "[]");
-  }
+import api from '../../config/api';
+import { Task } from '../../types/tasks';
 
-  static addTask(task: Task): void {
-    const tasks = this.getAllTasks();
-    tasks.push(task);
-    localStorage.setItem("tasks", JSON.stringify(task));
-  }
+const TASKS_API_URL = '/tasks';
 
-  static deleteTask(uuid: string): void {
-    const tasks = this.getAllTasks().filter((task) => task.uuid !== uuid);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+export const getTasks = async (): Promise<Task[]> => {
+  try {
+    const response = await api.get(TASKS_API_URL);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    throw error;
   }
+};
 
-  static updateTask(uuid: string, newData: Partial<Task>): void {
-    const tasks = this.getAllTasks().map((task) => {
-      if (task.uuid === uuid) {
-        Object.assign(task, newData);
-      }
-      return task;
-    });
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+export const getTaskById = async (uuid: string): Promise<Task> => {
+  try {
+    const response = await api.get(`${TASKS_API_URL}/${uuid}`);
+    return response.data as Task;
+  } catch (error) {
+      console.error('Error fetching task by id:', error);
+      throw error;
   }
+};
 
-  static getTask(uuid: string): Task | undefined {
-    const tasks = this.getAllTasks();
-    return tasks.find((task) => task.uuid === uuid);
+export const createTask = async (task: Task): Promise<Task> => {
+  try {
+    const response = await api.post(TASKS_API_URL, task);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating task:', error);
+    throw error;
   }
-}
+};
+
+export const deleteTask = async (uuid: string): Promise<void> => {
+  try {
+    await api.delete(`${TASKS_API_URL}/${uuid}`);
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    throw error;
+  }
+};
+
+
+export const updateTask = async (
+  uuid: string,
+  task: Task,
+): Promise<Task> => {
+  try {
+    console.log(uuid)
+    console.log(task)
+
+    const response = await api.put(`${TASKS_API_URL}/${uuid}`, task);
+    return response.data as Task;
+  } catch (error) {
+    console.error('Error updating story:', error);
+    throw error;
+  }
+};
