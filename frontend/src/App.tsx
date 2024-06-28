@@ -7,7 +7,9 @@ import LogIn from './pages/Authentication/LogIn';
 import Settings from './pages/Settings';
 import Stories from './pages/Dashboard/Stories';
 import Projects from './pages/Dashboard/Projects';
+import Kanban from './pages/Dashboard/Kanban';
 import StoryDetails from './pages/Dashboard/StoryDetails';
+import TaskDetails from './pages/Dashboard/TaskDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -66,12 +68,30 @@ function App() {
           }
         />
 
-<Route
+        <Route
           path="/stories/:uuid"
           element={
             <>
               <PageTitle title="Story Details | ManageMe" />
               <StoryDetails />
+            </>
+          }
+        />
+        <Route
+          path="/tasks/:uuid"
+          element={
+            <>
+              <PageTitle title="Task Details | ManageMe" />
+              <TaskDetails />
+            </>
+          }
+        />
+      <Route
+          path="/projects/kanban"
+          element={
+            <>
+              <PageTitle title="Project Kanban | ManageMe" />
+              <Kanban />
             </>
           }
         />

@@ -23,7 +23,7 @@ const taskSchema = new Schema({
   addDate: { type: Date, required: true },
   status: { type: String, enum: ['todo', 'doing', 'done'], required: true },
   owner: { type: String },
-  estimatedTime: { type: Number, required: true },
+  estimatedTime: { type: Number},
   startDate: { type: Date },
   endDate: { type: Date },
 });

@@ -5,6 +5,7 @@ import { createStory, getStories } from '../../api/Stories/storyService';
 import { Story } from '../../types/story';
 import { getUserActiveProject } from '../../api/Projects/projectService';
 import { Link } from 'react-router-dom';
+import { getTasks } from '../../api/Tasks/taskService';
 
 const Stories: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);
@@ -32,10 +33,11 @@ const Stories: React.FC = () => {
       projectUuid: activeProject,
       status: newStoryStatus,
       creationDate: new Date(),
-      owner: '', 
-    }
+      owner: '',
+    };
 
     try {
+      console.log(newStory);
       const createdStory = await createStory(newStory);
       console.log(createdStory);
       setStories([...stories, createdStory]);
@@ -53,7 +55,8 @@ const Stories: React.FC = () => {
         const activeUserStory = await getUserActiveProject();
         setactiveProject(activeUserStory.toString())
         //@ts-ignore
-        const data = await getStories(activeUserStory.toString());
+        const data = await getTasks();
+        //@ts-ignore
         setStories(data);
       } catch (error) {
         console.error('Error fetching stories:', error);
@@ -63,15 +66,13 @@ const Stories: React.FC = () => {
     fetchStories();
   }, []);
 
-  const handlePlusClick = () => {
-    setShowAddModal(true);
-  };
+
 
   return (
     <DefaultLayout>
       <Breadcrumb
         pageName="
-      Project Stories"
+      Project Tasks"
       />
       <div className="flex gap-4">
         {columns.map((column) => (
@@ -81,13 +82,7 @@ const Stories: React.FC = () => {
               key={column.status}
             >
               <h2 className="text-xl font-bold text-black dark:text-white">{column.title}</h2>
-              {column.status === 'todo' && (
-                <div className="absolute w-4 p-2 -top-0.5  -top-0.">
-                  <button className="absolute w-4" onClick={handlePlusClick}>
-                    <p className=" font-bold text-2xl">+</p>
-                  </button>
-                </div>
-              )}
+             
             </div>
             <div className="space-y-4 mt-3">
             {stories
@@ -99,7 +94,7 @@ const Stories: React.FC = () => {
                   >
                     <h3 className="font-semibold">{story.name}</h3>
                     <p className="text-sm text-black dark:text-white">{story.description}</p>
-                    <Link to={`/stories/${story.uuid}`} className="text-blue-500 hover:underline">See Story</Link>
+                    <Link to={`/tasks/${story.uuid}`} className="text-blue-500 hover:underline">See Task</Link>
                   </div>
                 ))}
             </div>
@@ -114,7 +109,7 @@ const Stories: React.FC = () => {
             <h3 className="font-medium text-black dark:text-white mb-4">
               Add New Story
             </h3>
-            <form>
+            <form onSubmit={handleAddStory}>
               <div className="mb-4">
                 <label
                   htmlFor="storyName"

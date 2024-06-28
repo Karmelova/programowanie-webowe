@@ -13,6 +13,16 @@ export const getTasks = async (): Promise<Task[]> => {
   }
 };
 
+export const getTaskById = async (uuid: string): Promise<Task> => {
+  try {
+    const response = await api.get(`${TASKS_API_URL}/${uuid}`);
+    return response.data as Task;
+  } catch (error) {
+      console.error('Error fetching task by id:', error);
+      throw error;
+  }
+};
+
 export const createTask = async (task: Task): Promise<Task> => {
   try {
     const response = await api.post(TASKS_API_URL, task);
@@ -32,12 +42,19 @@ export const deleteTask = async (uuid: string): Promise<void> => {
   }
 };
 
-export const updateTask = async (uuid: string, task: Task): Promise<Task> => {
+
+export const updateTask = async (
+  uuid: string,
+  task: Task,
+): Promise<Task> => {
   try {
+    console.log(uuid)
+    console.log(task)
+
     const response = await api.put(`${TASKS_API_URL}/${uuid}`, task);
-    return response.data;
+    return response.data as Task;
   } catch (error) {
-    console.error('Error updating task:', error);
+    console.error('Error updating story:', error);
     throw error;
   }
 };

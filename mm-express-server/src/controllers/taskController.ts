@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Task from '../models/Task';
 import Story from '../models/Story';
+import { v4 as uuidv4 } from "uuid";
 
 export const getTasks = async (req: Request, res: Response) => {
   try {
@@ -15,13 +16,14 @@ export const getTasks = async (req: Request, res: Response) => {
 
 export const getTaskById = async (req: Request, res: Response) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const { id } = req.params;
+    const task = await Task.findOne({ uuid: id });
     if (!task) {
-      return res.status(404).json({ message: 'Task not found' });
+      return res.status(404).json({ message: "Task not found" });
     }
     res.json(task);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching task', error });
+    res.status(500).json({ message: "Error fetching task", error });
   }
 };
 
@@ -29,7 +31,7 @@ export const createTask = async (req: Request, res: Response) => {
   try {
     const { uuid, name, description, priority, storyUuid, addDate, status, owner, estimatedTime, startDate, endDate } = req.body;
     const newTask = new Task({
-      uuid,
+      uuid: uuidv4(),
       name,
       description,
       priority,
@@ -48,7 +50,7 @@ export const createTask = async (req: Request, res: Response) => {
   }
 };
 
-export const updateTask = async (req: Request, res: Response) => {
+export const updateTasky = async (req: Request, res: Response) => {
   try {
     const { name, description, priority, storyUuid, addDate, status, owner, estimatedTime, startDate, endDate } = req.body;
     const updatedTask = await Task.findByIdAndUpdate(
@@ -62,6 +64,32 @@ export const updateTask = async (req: Request, res: Response) => {
     res.json(updatedTask);
   } catch (error) {
     res.status(500).json({ message: 'Error updating task', error });
+  }
+};
+
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    const {
+      uuid,
+      name,
+      description,
+      priority,
+      storyUuid,
+      AddDate,
+      status,
+      owner,
+    } = req.body;
+    const updatedTask = await Task.findOneAndUpdate(
+      { uuid: req.params.id },
+      { name, description, priority, storyUuid, AddDate, status, owner },
+      { new: true }
+    );
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    res.json(updatedTask);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating Task", error });
   }
 };
 

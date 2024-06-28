@@ -16,7 +16,6 @@ export const getStories = async (): Promise<Story[]> => {
 export const getStoryById = async (uuid: string): Promise<Story> => {
   try {
     const response = await api.get(`${STORIES_API_URL}/${uuid}`);
-    console.log(response)
     return response.data as Story;
   } catch (error) {
       console.error('Error fetching story by id:', error);

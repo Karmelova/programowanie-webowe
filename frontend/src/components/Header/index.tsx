@@ -80,9 +80,7 @@ const Header = (props: {
             
           </ul>
 
-          {/* <!-- User Area --> */}
-          <LoggedUser />
-          {/* <!-- User Area --> */}
+
         </div>
       </div>
     </header>

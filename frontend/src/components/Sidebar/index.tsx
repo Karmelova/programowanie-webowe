@@ -78,7 +78,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [authToken]);
 
-  // get active project to set proper nav to stories/kanban/tasks
+  // get active project to set proper nav to stories
   const handleFetchActiveProject = async () => {
     try {
       const response = await getUserActiveProject();
@@ -211,9 +211,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 {/* <!-- Menu Item Kanban --> */}
                 <li>
                   <NavLink
-                    to="/projects/:uuid"
+                    to="/projects/kanban"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname == `/projects/${activeProject}` &&
+                      pathname.includes('/kanban') &&
                       'bg-graydark dark:bg-meta-4'
                     }`}
                   >
