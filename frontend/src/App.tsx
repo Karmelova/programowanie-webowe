@@ -7,6 +7,7 @@ import LogIn from './pages/Authentication/LogIn';
 import Settings from './pages/Settings';
 import Stories from './pages/Dashboard/Stories';
 import Projects from './pages/Dashboard/Projects';
+import StoryDetails from './pages/Dashboard/StoryDetails';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,6 +62,16 @@ function App() {
             <>
               <PageTitle title="Stories Kanban | ManageMe" />
               <Stories />
+            </>
+          }
+        />
+
+<Route
+          path="/stories/:uuid"
+          element={
+            <>
+              <PageTitle title="Story Details | ManageMe" />
+              <StoryDetails />
             </>
           }
         />

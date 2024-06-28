@@ -4,6 +4,7 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { createStory, getStories } from '../../api/Stories/storyService';
 import { Story } from '../../types/story';
 import { getUserActiveProject } from '../../api/Projects/projectService';
+import { Link } from 'react-router-dom';
 
 const Stories: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);
@@ -90,7 +91,7 @@ const Stories: React.FC = () => {
               )}
             </div>
             <div className="space-y-4 mt-3">
-              {stories
+            {stories
                 .filter((story) => story.status === column.status)
                 .map((story) => (
                   <div
@@ -99,6 +100,7 @@ const Stories: React.FC = () => {
                   >
                     <h3 className="font-semibold">{story.name}</h3>
                     <p className="text-sm text-black dark:text-white">{story.description}</p>
+                    <Link to={`/stories/${story.uuid}`} className="text-blue-500 hover:underline">See Story</Link>
                   </div>
                 ))}
             </div>

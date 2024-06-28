@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import api from '../../config/api';
 import { Story } from '../../types/story';
 
@@ -9,6 +10,33 @@ export const getStories = async (): Promise<Story[]> => {
     return response.data;
   } catch (error) {
     console.error('Error fetching stories:', error);
+    throw error;
+  }
+};
+export const getStoryById = async (uuid: string): Promise<Story> => {
+  try {
+    console.log(uuid)
+    const response = await api.get(`${STORIES_API_URL}/${uuid}`);
+    console.log(response)
+    return response.data as Story;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        // Server responded with a non-success status code
+        console.error('Request failed with status:', axiosError.response.status);
+        console.error('Response data:', axiosError.response.data);
+      } else if (axiosError.request) {
+        // Request made but no response received
+        console.error('No response received:', axiosError.request);
+      } else {
+        // Something else happened while setting up the request
+        console.error('Error setting up the request:', axiosError.message);
+      }
+    } else {
+      // Network error or other unexpected errors
+      console.error('Error fetching story by id:', error);
+    }
     throw error;
   }
 };

@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
 import Task from '../models/Task';
+import Story from '../models/Story';
 
 export const getTasks = async (req: Request, res: Response) => {
   try {
-    const tasks = await Task.find();
+    const activeProjectUuid = req.user?.activeProject; 
+    const stories = await Story.find({ projectUuid: activeProjectUuid }).select('uuid')
+    const tasks = await Task.find({ storyUuid: { $in: stories.map(story => story.uuid) } });
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching tasks', error });
